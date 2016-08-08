@@ -56,10 +56,10 @@ tprev = ti    #s Previous time that the gain was adapted in outer loop
 if analysis == True or distance == True:
     #Analyse with different wind at different initial distances
     if mode == 2 or mode == 3 or mode == 4:  #only implemented in mode 2, 3 and 4
-        vwindlst = np.arange(-3.0,3.0,0.11)
-        x0lst = np.arange(8,12,2)
-        # vwindlst = np.arange(-1.5,1.7,0.2)
-        # x0lst = np.arange(10,14,2)
+        # vwindlst = np.arange(-3.0,3.0,0.11)
+        # x0lst = np.arange(8,12,2)
+        vwindlst = np.arange(-1.5,1.7,0.2)
+        x0lst = np.arange(10,14,2)
         #Simulation function is based on a single value for wind and distance!
         
 #Add gusts to the wind
