@@ -57,7 +57,7 @@ if analysis == True:
         print "Time runouts occurred!"
 
     #Plot a line of best fit
-    x_bestfit = np.arange(0.,max(Kcritlst),0.1)
+    x_bestfit = np.arange(min(Kcritlst),max(Kcritlst),0.1)
     y_bestfit = intercept + slope*x_bestfit
 
     #Theoretical distance prediction: x = 0.5*Kx*Tstep
@@ -68,18 +68,19 @@ if analysis == True:
     #xcrit_p = Kxtheoretical*coeff_p
 
     #Plot
-    # plt.plot(Kcritlst,xcritlst, "ro")
+    plt.plot(Kcritlst,xcritlst, "ro")
     # fig1 = plt.figure()
     # ax = fig1.add_subplot(111)
-    for x0 in range(len(x0lst)):
-        xcrit = xcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
-        Kcrit = Kcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
-        plt.scatter(Kcrit, xcrit, c=vwindlst, marker='o', s=50, cmap='winter')
+    # for x0 in range(len(x0lst)):
+    #     xcrit = xcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
+    #     Kcrit = Kcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
+    #     plt.scatter(Kcrit, xcrit, c=vwindlst, marker='o', s=50, cmap='winter')
     plt.plot(x_bestfit,y_bestfit, "g-")
     plt.xlabel(r"$K_{zx}$ [-]")
     plt.ylabel(r"$x$ [m]")
     matplotlib.rcParams.update({'font.size': 20})  # increase font size on axes (edited)
-    plt.colorbar(label='Wind speed [m/s]')
+    # plt.colorbar(label='Wind speed [m/s]')
+
     # plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     #plt.plot(Kxtheoretical,xcrittheoretical, "b-")
     #plt.plot(Kxtheoretical,xcrittheoretical, "m-")
@@ -87,11 +88,11 @@ if analysis == True:
     plt.show()
 
     # Plot to show relation with wind
-    for x0 in range(len(x0lst)):
-        Kcrit = Kcritlst[x0 * len(vwindlst):x0 * len(vwindlst) + len(vwindlst)]
-        plt.scatter(vwindlst, Kcrit)
-
-    plt.show()
+    # for x0 in range(len(x0lst)):
+    #     Kcrit = Kcritlst[x0 * len(vwindlst):x0 * len(vwindlst) + len(vwindlst)]
+    #     plt.scatter(vwindlst, Kcrit)
+    #
+    # plt.show()
 
     #Estimate the distance at a further point based on the compiled model, no wind
     x_real = x0lst[-1] + 2.

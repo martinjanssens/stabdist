@@ -37,29 +37,30 @@ ti = 0.       #s
 tlst = [ti]   #Initialise timelist
 tmax = 55.    #s
 g = 9.81      #m/s^2
-PIinner = [1.8,1.5,-1.] #P,I,D gain for inner control loop
+PIinner = [1.,1.,-1.] #P,I,D gain for inner control loop 1.8,1.5
 Iz = 1.         #Gain for integral control, inner control loop
 covset = 0.01 #-
 ecov = 0.005
-emax = 0.001 #Covariance error at which the program detects instability
+emax = 0.0005 #Covariance error at which the program detects instability
 
 #Variable initial parameters
-delay = 0.15  #s
+delay = 0.1#s
 Tstep = 0.01  #s
 Kx0 = 30.      #- Initial gain
 Kz0 = 10.      #- "
-vwind = 3.0    #m/s for single simulation
-Kstep = 0.1  #s <-- Could I base this on something else than a time? An error?
+vwind = 0.    #m/s for single simulation
+Kstep = 0.1  #s
 tprev = ti    #s Previous time that the gain was adapted in outer loop
 
-#Analysis of multiple landings with different initial conditions if analysis == True
+#Analysis of multiple hover manoeuvres with different initial conditions if analysis == True
 if analysis == True or distance == True:
     #Analyse with different wind at different initial distances
     if mode == 2 or mode == 3 or mode == 4:  #only implemented in mode 2, 3 and 4
         # vwindlst = np.arange(-3.0,3.0,0.11)
         # x0lst = np.arange(8,12,2)
-        vwindlst = np.arange(-1.5,1.7,0.2)
-        x0lst = np.arange(10,14,2)
+        # vwindlst = np.arange(-1.5,1.7,0.2)
+        vwindlst = [0.]
+        x0lst = np.arange(3,10,1)
         #Simulation function is based on a single value for wind and distance!
         
 #Add gusts to the wind
@@ -67,7 +68,7 @@ gust = True
 if gust == True:
     trange = np.arange(0,tmax+Tstep,Tstep)
     W = 0.1
-    a = 3.
+    a = 3.0
     vwindgust = vwind + W*np.sin(a*trange)
 
 #Noise model for divergence
@@ -75,10 +76,10 @@ noise = [0.8506,-0.0728,0.6022,0.1709,0.0306]
 
 #STATE
 #state = [x, vx, z, vz, ux, uz, m]
-x = 5.
+x = 10.
 vx = 0.
 z = 10.
-vz = 0.0
+vz = 0.
 ux = 0.
 uz = 0.
 m = 1.        #kg
@@ -107,8 +108,8 @@ zland = 0.    #m
 f_window = 35 #timesteps
 bw_min = 1.5  #Hz
 bw_max = 3.5  #Hz
-Xset = 0.03#0.075
-adaptcov = True
+Xset = 0.01#0.075
+adaptcov = False
 unstable = False
 
 #Mode dependent parameters
@@ -121,7 +122,7 @@ if mode == 1:
     icov = 2
     iezlst = 3
     PIouter = [0,0,0] #No outer loop
-if mode == 2:
+elif mode == 2:
     wset = 0.         #1/s
     PIouter = [.9,.2,.2] #P,I,D
           #[wactz,ecov,Kz,ez,tprev,Xfmaxlst,[wreal (without noise)]]
@@ -133,7 +134,7 @@ if mode == 2:
     itprev = 4
     iXfmax = 5
     iwrealz = 6
-if mode == 3:
+elif mode == 3:
     wset = 0.         #1/s
     PIouter = [.9,.2,.2] #P,I,D
           #[wactz,ecov,Kx,ez,tprev,drag,Xfmaxlst]
@@ -145,7 +146,7 @@ if mode == 3:
     itprev = 4
     ip = 5
     iXfmax = 6
-if mode == 4:
+elif mode == 4:
     #Add the y-drection
     y = 10.
     vy = 0.

@@ -164,13 +164,19 @@ if plot_traj == True: #Do a single simulation and plot the result
         host.set_xlabel("Time")
         host.set_ylabel(r"$u_z$ [N]")
         par1.set_ylabel(r"$w_{zx}$ [1/s]")
-        par2.set_ylabel(r"$e_{cov}$ [-]")
        # par3.set_ylabel(r"$z(t)$ [-]")
 
         p1, = host.plot(tlst[-window:], state_in_time[:, iuz][-window:], 'r-', label=r'$u_z$')
         p2, = par1.plot(tlst[-window:], data[iwactx][-window:], 'g-', label = r'$w_{zx}$')
-        p3, = par2.plot(data[itprev][-window_k:], data[iecov][-window_k:], 'b-', label=r"$e_{cov}$")
+        if adaptcov == True:
+            p3, = par2.plot(data[itprev][-window_k:], data[iecov][-window_k:], 'b-', label=r"$e_{cov}$")
+            par2.set_ylabel(r"$e_{cov}$ [-]")
+        else:
+            p3, = par2.plot(data[itprev][-window_k:], data[iXfmax][-window_k:], 'b-', label=r"$e_{cov}$")
+            par2.set_ylabel(r"$e_{X}$ [-]")
+
         # p4, = host.plot(tlst[-window:], state_in_time[:, iz][-window:], 'k-', label=r'$z$')
+
 
         # par1.set_ylim(0, 4)
         # par2.set_ylim(bottom=0.0299)
