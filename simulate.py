@@ -132,6 +132,8 @@ if plot_traj == True: #Do a single simulation and plot the result
         # plt.title("Kx-t")
         # plt.show()
 
+        # print data[iKx][-1]
+
         window_s = 15
         window = int(round(window_s/Tstep))+5
         window_k = int(round(window_s/Kstep))
@@ -195,7 +197,6 @@ if plot_traj == True: #Do a single simulation and plot the result
         # plt.show()
 
 
-
         # window_s = 1.5
         # window = int(round(window_s/Tstep))+5
         # window_k = int(round(window_s/Kstep))
@@ -245,6 +246,7 @@ if plot_traj == True: #Do a single simulation and plot the result
         ax4.set_ylabel(r'$K_{zx}$ [-]')
         plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
         plt.legend(loc=4)
+
         # plt.savefig('output\simulate_e.eps', bbox_inches = 'tight')
         #
         # # Redefine the plotting window

@@ -28,6 +28,7 @@ if analysis == True:
                     state[ix] = x0
                 elif mode == 2:
                     state[iz] = x0
+                state_in_time = np.array(state)
                 #Do the simulation
                 data,state_in_time,tlst = simulate(ti,tlst,Tstep,mode,state,data,state_in_time,tmax,zmax,zland,covset,vwind,delay,beta,Kstep,PIinner,PIouter,emax,f_window,Xset,adaptcov,noise)
                 #Append Kx and x on instability point, at ti - delay
@@ -38,7 +39,7 @@ if analysis == True:
                 elif mode == 3:
                     Kcritlst.append(data[iKx][-int(delay/Tstep)])
                     xcritlst.append(state_in_time[:,ix][-int(delay/Tstep)])
-                    print "Done: x0 = ",x0,"vwind = ",vwind,". Kx = ",data[iKx][-int(delay/Tstep)] 
+                    print "Done: x0 = ",x0,"vwind = ",vwind,". Kx = ",data[iKx][-int(delay/Tstep)]
                 elif mode == 4:
                     Kcritlst.append(data[iKy][-int(delay/Tstep)])
                     xcritlst.append(state_in_time[:,ix][-int(delay/Tstep)])
@@ -68,18 +69,18 @@ if analysis == True:
     #xcrit_p = Kxtheoretical*coeff_p
 
     #Plot
-    plt.plot(Kcritlst,xcritlst, "ro")
-    # fig1 = plt.figure()
-    # ax = fig1.add_subplot(111)
-    # for x0 in range(len(x0lst)):
-    #     xcrit = xcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
-    #     Kcrit = Kcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
-    #     plt.scatter(Kcrit, xcrit, c=vwindlst, marker='o', s=50, cmap='winter')
+    # plt.plot(Kcritlst,xcritlst, "ro")
+    fig1 = plt.figure()
+    ax = fig1.add_subplot(111)
+    for x0 in range(len(x0lst)):
+        xcrit = xcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
+        Kcrit = Kcritlst[x0*len(vwindlst):x0*len(vwindlst)+len(vwindlst)]
+        plt.scatter(Kcrit, xcrit, c=vwindlst, marker='o', s=50, cmap='winter')
     plt.plot(x_bestfit,y_bestfit, "g-")
     plt.xlabel(r"$K_{zx}$ [-]")
     plt.ylabel(r"$x$ [m]")
     matplotlib.rcParams.update({'font.size': 20})  # increase font size on axes (edited)
-    # plt.colorbar(label='Wind speed [m/s]')
+    plt.colorbar(label='Wind speed [m/s]')
 
     # plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     #plt.plot(Kxtheoretical,xcrittheoretical, "b-")
@@ -88,13 +89,13 @@ if analysis == True:
     plt.show()
 
     # Plot to show relation with wind
-    # for x0 in range(len(x0lst)):
-    #     Kcrit = Kcritlst[x0 * len(vwindlst):x0 * len(vwindlst) + len(vwindlst)]
-    #     plt.scatter(vwindlst, Kcrit)
-    #
-    # plt.show()
+    for x0 in range(len(x0lst)):
+        Kcrit = Kcritlst[x0 * len(vwindlst):x0 * len(vwindlst) + len(vwindlst)]
+        plt.scatter(vwindlst, Kcrit)
 
-    #Estimate the distance at a further point based on the compiled model, no wind
+    plt.show()
+
+    #Estimate the distance at a further point based on the compiled model
     x_real = x0lst[-1] + 2.
     exec(open('parameters.py').read())
     vwind = 0.5

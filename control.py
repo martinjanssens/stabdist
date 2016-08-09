@@ -204,7 +204,19 @@ def controlmode3(state,state_in_time,data,ti,vwind,delay,Tstep,beta,Kstep,covset
     #Dynamics and control of z-axis, given perfect knowledge of vz/x
     wactx,_ = OFestimator(state[ivz],state[ix],noise)
     #Inner Control law in z, including delay
-    uz = state[im]*(g+constOFctrl(ti,delay,wactx,wset,data[iwactx],data[iKx][-1],Tstep,data[iezlst],PIinner,Iz))
+    uz = constOFctrl(ti,delay,wactx,wset,data[iwactx],data[iKx][-1],Tstep,data[iezlst],PIinner,Iz)
+    #Scale to thrust
+    uz = state[im] * (g + uz)
+    #Add actuator efficiency
+    uz_eff = uz - 0.5*state[ivz]*uz - 0.5*state[ivz]
+    if uz_eff > 0:
+        uz = uz_eff
+
+    #Add saturation
+    u_sat = 10.4
+    if uz > u_sat: uz = u_sat
+    elif uz < -u_sat: uz = -u_sat
+
     #Outer control law in z
     if ti > data[itprev][-1] + Kstep:
         if adaptcov == True:

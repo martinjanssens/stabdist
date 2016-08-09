@@ -32,16 +32,16 @@ distance = False
 #distance and analysis cannot both be True due to wind import in control function!
 
 #General parameters
-beta = 0.5    # --> beta = 1/2*rho*C_D*A
+beta = 0.1    # --> beta = 1/2*rho*C_D*A
 ti = 0.       #s
 tlst = [ti]   #Initialise timelist
 tmax = 55.    #s
 g = 9.81      #m/s^2
-PIinner = [1.,1.,-1.] #P,I,D gain for inner control loop 1.8,1.5
+PIinner = [1.8,2.0,-1.] #P,I,D gain for inner control loop 1.8,1.5
 Iz = 1.         #Gain for integral control, inner control loop
 covset = 0.01 #-
 ecov = 0.005
-emax = 0.0005 #Covariance error at which the program detects instability
+emax = 0.001 #Covariance error at which the program detects instability
 
 #Variable initial parameters
 delay = 0.1#s
@@ -49,7 +49,7 @@ Tstep = 0.01  #s
 Kx0 = 30.      #- Initial gain
 Kz0 = 10.      #- "
 vwind = 0.    #m/s for single simulation
-Kstep = 0.1  #s
+Kstep = 0.05  #s
 tprev = ti    #s Previous time that the gain was adapted in outer loop
 
 #Analysis of multiple hover manoeuvres with different initial conditions if analysis == True
@@ -57,26 +57,27 @@ if analysis == True or distance == True:
     #Analyse with different wind at different initial distances
     if mode == 2 or mode == 3 or mode == 4:  #only implemented in mode 2, 3 and 4
         # vwindlst = np.arange(-3.0,3.0,0.11)
-        # x0lst = np.arange(8,12,2)
-        # vwindlst = np.arange(-1.5,1.7,0.2)
-        vwindlst = [0.]
-        x0lst = np.arange(3,10,1)
+        x0lst = np.arange(3,11,2)
+        vwindlst = np.arange(-2.5,3.5,1.0)
+        # vwindlst = [0.]
+        # x0lst = np.arange(3,25,1)
         #Simulation function is based on a single value for wind and distance!
         
 #Add gusts to the wind
 gust = True
 if gust == True:
     trange = np.arange(0,tmax+Tstep,Tstep)
-    W = 0.1
+    W = 0.4
     a = 3.0
     vwindgust = vwind + W*np.sin(a*trange)
 
 #Noise model for divergence
 noise = [0.8506,-0.0728,0.6022,0.1709,0.0306]
 
+
 #STATE
 #state = [x, vx, z, vz, ux, uz, m]
-x = 10.
+x = 20.
 vx = 0.
 z = 10.
 vz = 0.
@@ -109,7 +110,7 @@ f_window = 35 #timesteps
 bw_min = 1.5  #Hz
 bw_max = 3.5  #Hz
 Xset = 0.01#0.075
-adaptcov = False
+adaptcov = True
 unstable = False
 
 #Mode dependent parameters
