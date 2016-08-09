@@ -8,5 +8,5 @@ Mode 2: Hover until instability vz/z-based, with delay, constant wind, ZOH. <br 
 Mode 3: Hover until instability vz/x-based, with delay, constant wind, ZOH. <br />
 Mode 4: Hover until instability vy/x-based, with delay, wind in y-direction, ZOH. <br />
 
-Set plot_traj = True and analysis = False to run/plot a single simulation run. <br />
-Conversely set analysis = True and plot_traj = False to run a set of simulations for a range of distances and wind speeds.
+Set plot_traj = True and analysis = False and run simulate.py to run/plot a single simulation run. <br />
+Conversely set analysis = True and plot_traj = False and run analysis.py to run a set of simulations for a range of distances and wind speeds.
