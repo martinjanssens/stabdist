@@ -1,7 +1,7 @@
 # stabdist
 Simulation environment for a stability-based, monocular distance estimation algorithm for UAV systems 
 
-MODES <br />
+Modes: <br />
 There are different modes, set in parameters.py. Setting the mode chooses the simulation. <br />
 Mode 1: Landing with constant gain, with delay, ZOH, constant wind, vz/z-based <br />
 Mode 2: Hover until instability vz/z-based, with delay, constant wind, ZOH. <br />
