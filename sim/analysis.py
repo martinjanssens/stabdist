@@ -82,7 +82,6 @@ if analysis == True:
     matplotlib.rcParams.update({'font.size': 20})  # increase font size on axes (edited)
     plt.colorbar(label='Wind speed [m/s]')
 
-    # plt.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     #plt.plot(Kxtheoretical,xcrittheoretical, "b-")
     #plt.plot(Kxtheoretical,xcrittheoretical, "m-")
     plt.savefig('output\dist_analysis_f.eps', bbox_inches='tight')

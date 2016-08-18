@@ -8,10 +8,6 @@ import numpy as np
 #Mode 1: Landing with constant gain, with delay, ZOH, constant wind, vz/z-based
 #Mode 2: Hover until instability vz/z-based, with delay, constant wind, ZOH
 #Mode 3: Hover until instability vz/x-based, with delay, constant wind, ZOH.
-#        How are you going to deal with a camera looking horizontally when you
-#        are moving up and down? How to assess when you become unstable,
-#        especially when you are far away from the surface? Find out about OF-
-#        methods in passing flow instead of divergence. Check linearity.
 #Mode 4: Hover until instability vy/x-based, with delay, wind in y-direction, ZOH.
 #        Better, worse or similar to vz/x? Still need to add the dynamics of tilting
 #        the rotorcraft to generate uy!
@@ -59,8 +55,6 @@ if analysis == True or distance == True:
         # vwindlst = np.arange(-3.0,3.0,0.11)
         x0lst = np.arange(3,11,2)
         vwindlst = np.arange(-2.5,3.5,1.0)
-        # vwindlst = [0.]
-        # x0lst = np.arange(3,25,1)
         #Simulation function is based on a single value for wind and distance!
         
 #Add gusts to the wind

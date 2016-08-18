@@ -5,7 +5,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-import math
 import scipy.signal as scis
 from scipy.integrate import odeint
 from mpl_toolkits.axes_grid1 import host_subplot
@@ -114,60 +113,22 @@ if plot_traj == True: #Do a single simulation and plot the result
         plt.title("Kx-t")
         plt.show()
     if mode == 3:
-        # plt.subplot(1,2,1)
-        # plt.plot(tlst,state_in_time[:,iz])
-        # plt.title("z-t")
-        # plt.subplot(1,4,2)
-        # if adaptcov == True:
-        #     plt.plot(data[itprev],data[iecov])
-        #     plt.title("Covariance error")
-        # else:
-        #     plt.plot(data[itprev],data[iXfmax])
-        #     plt.title("|WACTX(f)|")
-        # plt.subplot(1,4,3)
-        # plt.plot(tlst,data[iwactx])
-        # plt.title("vz/x")
-        # plt.subplot(1,4,4)
-        # plt.plot(data[itprev],data[iKx])
-        # plt.title("Kx-t")
-        # plt.show()
-
-        # print data[iKx][-1]
-
         window_s = 15
         window = int(round(window_s/Tstep))+5
         window_k = int(round(window_s/Kstep))
-
         host = host_subplot(111, axes_class=AA.Axes)
         plt.subplots_adjust(right=0.75)
-
         par1 = host.twinx()
         par2 = host.twinx()
-        # par3 = host.twinx()
-
         offset = 120
         new_fixed_axis = par2.get_grid_helper().new_fixed_axis
         par2.axis["right"] = new_fixed_axis(loc="right",
                                             axes=par2,
                                             offset=(offset, 0))
-
         par2.axis["right"].toggle(all=True)
-
-        # new_fixed_axis = par3.get_grid_helper().new_fixed_axis
-        # par3.axis["left"] = new_fixed_axis(loc="left",
-        #                                     axes=par3,
-        #                                     offset=(-offset, 0))
-        #
-        # par3.axis["left"].toggle(all=True)
-
-        # host.set_xlim(0, 2)
-        # host.set_ylim(0, 2)
-
         host.set_xlabel("Time")
         host.set_ylabel(r"$u_z$ [N]")
         par1.set_ylabel(r"$w_{zx}$ [1/s]")
-       # par3.set_ylabel(r"$z(t)$ [-]")
-
         p1, = host.plot(tlst[-window:], state_in_time[:, iuz][-window:], 'r-', label=r'$u_z$')
         p2, = par1.plot(tlst[-window:], data[iwactx][-window:], 'g-', label = r'$w_{zx}$')
         if adaptcov == True:
@@ -176,25 +137,14 @@ if plot_traj == True: #Do a single simulation and plot the result
         else:
             p3, = par2.plot(data[itprev][-window_k:], data[iXfmax][-window_k:], 'b-', label=r"$e_{cov}$")
             par2.set_ylabel(r"$e_{X}$ [-]")
-
-        # p4, = host.plot(tlst[-window:], state_in_time[:, iz][-window:], 'k-', label=r'$z$')
-
-
-        # par1.set_ylim(0, 4)
-        # par2.set_ylim(bottom=0.0299)
-
         host.legend(loc=3)
-
         host.axis["left"].label.set_color(p1.get_color())
         par1.axis["right"].label.set_color(p2.get_color())
         par2.axis["right"].label.set_color(p3.get_color())
-        # par3.axis["right"].label.set_color(p4.get_color())
-
         matplotlib.rcParams.update({'font.size': 20})  # increase font size on axes (edited)
 
         plt.draw()
         # plt.savefig('output\simulate_gust.eps', bbox_inches = 'tight')
-        # plt.show()
 
 
         # window_s = 1.5

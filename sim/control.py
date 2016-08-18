@@ -24,14 +24,12 @@ def OFestimator(v,pos,noise):
     from parameters import mode
     w = v/pos #Perfectly measured OF
     if mode == 2 or mode == 1 or mode == 3:
-        #w_est = (w-noise[1])/noise[0]
-        #w_est = w_est + noise[2]*w_est**2 + noise[3]*w_est# + noise[4]
         w_est = w + noise[2]*w**2 + noise[3]*w# Systematic noise
         w_est = w_est * float(random.randrange(98,103))/100
     elif mode == 4:
-        #Random white noise, as divergence could be modelled like that too
+        #Used random white noise, since divergence could be modelled like that too
         w_est = w*float(random.randrange(90,111))/100
-    w_est = w # TURN OFF NOISE
+    # w_est = w # TURN OFF NOISE
     return w_est,w
 
 #Outer loop for hover control
@@ -43,8 +41,6 @@ def adaptgain(wactlst,ulst,covset,K,PIouter,ti,ecovlst,delay,Tstep):
     else:
         ulst = np.array(ulst[-10:-1])
         wactlst = np.array(wactlst[-int(delay/Tstep)-10:-(int(delay/Tstep)+1)])
-        #print ulst, wactlst
-        #cov = np.cov(ulst,wactlst)[0,0] #cov is slightly positive for my delay setting!
 
         # Compute covariance
         uz_bar = np.average(ulst)
@@ -54,29 +50,22 @@ def adaptgain(wactlst,ulst,covset,K,PIouter,ti,ecovlst,delay,Tstep):
         diff_wzx = wactlst - wzx_bar
 
         cov = sum(diff_uz * diff_wzx) / (ulst.shape[0] - 1)
-        # print ti, cov
-        # print "u: ",ulst
-        # print "w: ",wactlst
 
     ecov = covset - cov   #A positive value in my case, it diverges negatively!
-    # print "ecov: ", ecov
+
 #Controllers to adapt the gain:
-#I am struggling with building a controller that increases K enough to diverge, but not
-#so much that it cannot re-adjust around the edge of instability
-  #Option 1: What I understand from Guido's paper:
+  #Option 1: Guido's paper:
     K = K + PIouter[1]*K*ecovlst[-1] #K_current + Outergain_I*K_current*ecov_previous
     Kpi = K + PIouter[0]*K*ecov #K_new + Outergain_P*K_new*ecov_current
     Kpid = Kpi + PIouter[2]*Kpi*(ecov-ecovlst[-1]) #D-control
   #Option 2: PID controller --> Add differential gain to quicker adjust the gain
-    #Kp = PIouter[0]*ecov
-    #Ki = PIouter[1]*(sum(ecovlst)+ecov)
-    #Kd = PIouter[2]*(ecov-ecovlst[-1])/Tstep #If negative, gain should be decreased
-    #Kpi = K + Kp + Ki + Kd
-    #Running does not show any significant improvement in ecov divergence after instability
+    # Kp = PIouter[0]*ecov
+    # Ki = PIouter[1]*(sum(ecovlst)+ecov)
+    # Kd = PIouter[2]*(ecov-ecovlst[-1])/Tstep #If negative, gain should be decreased
+    # Kpi = K + Kp + Ki + Kd
   #Option 3: Just add a constant amount of gain!
     #Kpi = K + 1.9*(1+ecov)
-    #Surprisingly gives the best results for a linear model, but will not work to
-    #readjust the gain aroud the edge of instability
+    # Set minimum gain
     if Kpid < 0:
         Kpid = 10.
     return Kpid, ecov
@@ -128,7 +117,7 @@ def controlmode1(state,data,ti,delay,Tstep,PIinner,beta,vwind):
     #Drag
     if gust == False:
         p = np.sign(vwind-state[ivz])*0.5*beta*(vwind-state[ivz])**2
-    if gust == True:
+    elif gust == True:
         from parameters import vwindgust
         p = np.sign(vwindgust[int(ti/Tstep)]-state[ivz])*0.5*beta*(vwindgust[int(ti/Tstep)]-state[ivz])**2
     return uz,p

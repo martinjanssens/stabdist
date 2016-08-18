@@ -14,10 +14,10 @@ distance_modelest = False
 
 #Test of the different parameters' effect on the model
 
-#If I can show that the linear Kx-x model is purely a function of things that I can
+#Attempt to show that the linear Kx-x model is purely a function of things that I can
 #control and pre-program (and not of external variables like wind), then you have
 #a very good distance estimator!
-#What are the inputs? Accuracy of the OF measurement, covariance setting,
+#Inputs: Accuracy of the OF measurement, covariance setting,
 #mass of the drone, gain settings of the update loops, beta, delay, timestep,
 #how often the gain is updated
 
@@ -125,12 +125,12 @@ if distance == True and distance_pareffect == True:
 #Which means that for a certain drone with a given setting of [covset,Kstep,Tstep,delay],
 #you should be able to implement a linear distance estimator that works independently of
 #the wind-conditions, the mass of the drone (so with payload!), air density, surface area
-#or drag! That's nice!
+#or drag.
 
 
 #Perform two simulations at known distances, and make a model.
 #Based on the model perform another simulation and use it to estimate the distance
-#based purely on that model. Not very useful right now...
+#based purely on that model.
 elif distance == True and distance_modelest == True:
     #With random wind settings perform two simulations at known distances, and
     #make a model. Based on the model perform another simulation and use it to
